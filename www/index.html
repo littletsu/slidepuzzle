@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Slide puzzle</title>
+        <style>
+            #puzzle {
+                font-family: monospace;
+                font-size: 10em;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Slide puzzle</h1>
+        <div id="puzzle"></div><br>
+        <button id="shuffle">Shuffle</button>
+        <script>
+            const puzzle = document.getElementById("puzzle");
+            document.getElementById("shuffle").onclick = async () => {
+                const req = await fetch("/shuffle");
+                const text = await req.text();
+                puzzle.innerText = text;
+            }
+            const print = async () => {
+                const req = await fetch("/print");
+                const text = await req.text();
+                puzzle.innerText = text;
+            }
+            const moveAction = async (dir) => {
+                const req = await fetch(`/move${dir}`);
+                const text = await req.text();
+                puzzle.innerText = text;
+            }
+            print();
+            const keyActions = {
+                A: "Left",
+                D: "Right",
+                W: "Up",
+                S: "Down"
+            }
+            document.onkeydown = ({key}) => {
+                console.log(key);
+                let action = keyActions[key.toUpperCase()];
+                if(action) return moveAction(action);
+                if(key.startsWith("Arrow")) return moveAction(key.slice(5))
+            }
+        </script>
+    </body>
+</html>

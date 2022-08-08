@@ -76,3 +76,58 @@
 (defun promptLoop(table w h) (printTable table w h) (terpri) (loop (promptMoveAndPrint table w h) (terpri)))
 
 (defun Play(w h) (promptLoop (makeShuffledTable w h) w h))
+
+;;;; Web
+(ql:quickload "hunchentoot")
+
+(defvar *acceptor* (make-instance 'hunchentoot:easy-acceptor :port 4444
+                                     :document-root #p"www/"))
+(defvar *W* 3)
+(defvar *H* 3)
+(defvar *T* (makeShuffledTable *W* *H*))
+
+(hunchentoot:start *acceptor*)
+(defun concatStr(str cat) (concatenate 'string str cat))
+(defun printWeb(table w h)
+  (let ((res ""))
+  (loop :for i :from 0 :below h :do
+        (loop :for j :from 0 :below w :do 
+              (setf res (concatStr res (format nil "~A " (aref table (+ (* i w) j)))))) (setf res (concatStr res (format nil "~C" #\linefeed))))
+  (return-from printWeb res)))
+
+(hunchentoot:define-easy-handler (print-handler :uri "/print") ()
+  (setf (hunchentoot:content-type*) "text/plain")
+  (printWeb *T* *W* *H*))
+
+(hunchentoot:define-easy-handler (left-handler :uri "/moveLeft") ()
+  (setf (hunchentoot:content-type*) "text/plain")
+  (moveLeft *T* *W* *H*)
+  (printweb *t* *w* *h*))
+(hunchentoot:define-easy-handler (right-handler :uri "/moveRight") ()
+  (setf (hunchentoot:content-type*) "text/plain")
+  (moveRight *T* *W* *H*)
+  (printweb *t* *w* *h*))
+
+(hunchentoot:define-easy-handler (up-handler :uri "/moveUp") ()
+  (setf (hunchentoot:content-type*) "text/plain")
+  (moveUp *T* *W* *H*)
+  (printweb *t* *w* *h*))
+
+(hunchentoot:define-easy-handler (down-handler :uri "/moveDown") ()
+  (setf (hunchentoot:content-type*) "text/plain")
+  (moveDown *T* *W* *H*)
+  (printweb *t* *w* *h*))
+
+(hunchentoot:define-easy-handler (shuffle-handler :uri "/shuffle") ()
+  (setf (hunchentoot:content-type*) "text/plain")
+  (setf *T* (makeShuffledTable *W* *H*))
+  (printweb *t* *w* *h*))
+
+
+
+
+
+
+
+
+
