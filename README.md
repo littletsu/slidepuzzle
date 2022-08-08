@@ -2,7 +2,7 @@
 Slide puzzle game in Common Lisp
 
 # Playing
-The goal is to sort the numbers on the table
+The goal is to sort the numbers on the table<br>
 Use WASD to move the empty space (0) around
 ## SBCL
 Load slidepuzzle.cl and play using the `Play w h` function
