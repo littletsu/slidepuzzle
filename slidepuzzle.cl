@@ -118,7 +118,9 @@
   (moveDown *T* *W* *H*)
   (printweb *t* *w* *h*))
 
-(hunchentoot:define-easy-handler (shuffle-handler :uri "/shuffle") ()
+(hunchentoot:define-easy-handler (setdimensions-handler :uri "/setdimensions") (newW newH)
   (setf (hunchentoot:content-type*) "text/plain")
+  (setf *W* (parse-integer newW)
+        *H* (parse-integer newH))
   (setf *T* (makeShuffledTable *W* *H*))
   (printweb *t* *w* *h*))

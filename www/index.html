@@ -12,11 +12,15 @@
     <body>
         <h1>Slide puzzle</h1>
         <div id="puzzle"></div><br>
-        <button id="shuffle">Shuffle</button>
+        <input type="number" placeholder="W" id="w" value="3">
+        <input type="number" placeholder="H" id="h" value="3">
+        <button id="shuffle">Shuffle/Save new dimensions</button>
         <script>
             const puzzle = document.getElementById("puzzle");
+            const w = document.getElementById("w");
+            const h = document.getElementById("h");
             document.getElementById("shuffle").onclick = async () => {
-                const req = await fetch("/shuffle");
+                const req = await fetch(`/setdimensions?neww=${w.value}&newh=${h.value}`);
                 const text = await req.text();
                 puzzle.innerText = text;
             }
