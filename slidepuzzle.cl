@@ -1,3 +1,5 @@
+(setf *random-state* (make-random-state t))
+
 (defun makeTable(w h)
  (let ((table (make-array `(,(* w h)))))
  (loop :for i :from 0 :below (- (* w h) 1) :do 
