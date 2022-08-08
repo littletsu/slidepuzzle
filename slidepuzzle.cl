@@ -122,12 +122,3 @@
   (setf (hunchentoot:content-type*) "text/plain")
   (setf *T* (makeShuffledTable *W* *H*))
   (printweb *t* *w* *h*))
-
-
-
-
-
-
-
-
-
